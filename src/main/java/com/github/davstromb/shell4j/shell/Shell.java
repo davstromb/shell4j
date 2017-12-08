@@ -91,7 +91,7 @@ public class Shell {
     }
 
     private void save() {
-        System.out.println("Not implemented");
+        System.out.println("Saving session.... (not implemented)");
     }
 
     private boolean isCommand(String input) {
@@ -99,7 +99,7 @@ public class Shell {
     }
 
     private void lol() {
-        Path path = Paths.get("src/main/resources(lol.txt");
+        Path path = Paths.get("src/main/resources/lol.txt");
         try {
             Files.readAllLines(path).forEach(l -> System.out.println(l));
         } catch (IOException e) {
