@@ -1,13 +1,19 @@
+/*
+
 package com.github.davstromb.shell4j;
 
 import org.apache.commons.cli.UnrecognizedOptionException;
 import org.junit.Assert;
 import org.junit.Test;
 
+
+*/
 /**
  * @author Hassan Shah
  * @organization Omegapoint AB
- */
+ *//*
+
+
 public class Shell4jApplicationTest {
 
     @Test
@@ -38,3 +44,5 @@ public class Shell4jApplicationTest {
         }
     }
 }
+
+*/
