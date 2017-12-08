@@ -12,4 +12,5 @@ public interface Executor {
 
     public Executor print();
 
+    public String getCode();
 }

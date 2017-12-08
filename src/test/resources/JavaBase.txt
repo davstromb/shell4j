@@ -1,8 +1,10 @@
+package code;
+
 import java.util.*;
 
-public class JavaCode {
+public class Code {
 
     public static void main(String[] args) {
-
+            System.out.println("Mega Arne Test");
     }
 }

@@ -54,6 +54,11 @@ public class JavaExecutor implements Executor {
         return this;
     }
 
+    @Override
+    public String getCode() {
+        return cache.toString();
+    }
+
     public static Executor create() {
         return new JavaExecutor();
     }
