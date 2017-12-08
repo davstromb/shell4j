@@ -5,4 +5,8 @@ public class JavaCodeException extends RuntimeException {
     public JavaCodeException(String messageToUser, Exception e) {
         super(messageToUser, e);
     }
+
+    public JavaCodeException(String messageToUser) {
+        super(messageToUser);
+    }
 }
