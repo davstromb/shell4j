@@ -8,6 +8,6 @@ public class Printer {
     }
 
     public void save(StringBuilder cache) {
-
+        System.out.println(cache.toString());
     }
 }

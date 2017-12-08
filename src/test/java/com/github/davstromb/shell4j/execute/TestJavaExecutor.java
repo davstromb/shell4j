@@ -6,6 +6,9 @@ public class TestJavaExecutor {
 
     @Test
     public void testExecutorInit() {
+        Executor ex = new JavaExecutor();
+        ex.print();
+
 
     }
 

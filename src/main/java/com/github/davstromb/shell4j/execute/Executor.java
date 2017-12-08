@@ -6,7 +6,7 @@ public interface Executor {
 
     public void clean();
 
-    public void addCode(JavaCode code);
+    public Executor append(JavaCode code);
 
     public String execute();
 
