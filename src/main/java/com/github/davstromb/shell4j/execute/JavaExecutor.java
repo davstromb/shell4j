@@ -24,8 +24,9 @@ public class JavaExecutor implements Executor {
 
     }
 
-    public void clean() {
+    public Executor clean() {
         this.cache = new StringBuilder();
+        return this;
     }
 
     public Executor append(JavaCode code) {
@@ -37,7 +38,8 @@ public class JavaExecutor implements Executor {
         return "";
     }
 
-    public void print() {
+    public Executor print() {
         Printer.create().save(cache);
+        return this;
     }
 }
