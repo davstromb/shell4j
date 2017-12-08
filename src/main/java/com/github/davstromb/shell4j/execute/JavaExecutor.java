@@ -17,21 +17,12 @@ import java.nio.file.Paths;
 
 public class JavaExecutor implements Executor {
 
-
-    private static final String JAVA_BASE_TXT = "/JavaBase.txt";
-    private static final String JAVA_BASE_FILE = "/com/github/dastromb/shell4j/execute/code/Code.java";
-
-    private static final String CODE_PREFIX = "package code;\n" +
-            "\n" +
+    private static final String CODE_PREFIX =
             "import java.util.*;\n" +
             "\n" +
             "public class Code {\n" +
             "    \n" +
-            "    static {\n" +
-            "        System.out.println(\"Arne\");\n" +
-            "    }\n" +
-            "\n" +
-            "    public Code() {";
+            "    static {";
     private static final String CODE_SUFFIX = "    }" +
             "}";
 
@@ -39,10 +30,7 @@ public class JavaExecutor implements Executor {
 
     public JavaExecutor() {
         try {
-            this.cache = new StringBuilder(new String(
-                    Files.readAllBytes(
-                            Paths.get(getClass().getResource(JAVA_BASE_TXT).toURI())))
-            );
+            this.cache = new StringBuilder();
         } catch(Exception e) {
             throw new ExecutionException("Can not read java base code lol", e);
         }
@@ -63,6 +51,16 @@ public class JavaExecutor implements Executor {
         try {
 
             DynamicCompiler.create().run(CODE_PREFIX + cache.toString() + CODE_SUFFIX);
+
+        } catch (Exception e) {
+            throw new ExecutionException("Could not write code to file lol", e);
+        }
+        return "";
+    }
+
+    public String execute(String code) {
+        try {
+            DynamicCompiler.create().run(CODE_PREFIX + code + CODE_SUFFIX);
 
         } catch (Exception e) {
             throw new ExecutionException("Could not write code to file lol", e);
