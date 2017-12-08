@@ -1,7 +1,6 @@
 package com.github.davstromb.shell4j.model;
 
 import java.util.Objects;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class JavaCode implements Code {
@@ -11,7 +10,7 @@ public class JavaCode implements Code {
 
     public JavaCode(String codeAsString) {
         if(Objects.isNull(codeAsString)) {
-            throw new JavaCodeException("Code can not be null lol");
+            throw new CodeException("Code can not be null lol");
         }
 
         Pattern p = Pattern.compile(VARIABLE_REGEX);
