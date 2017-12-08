@@ -8,8 +8,10 @@ public class Shell4jApplication {
 
     public static void main(String... args) {
         Options options = new Options();
-        options.addOption("verbose", "More details in logging. Disabled as default.");
-        options.addOption("import",  "Enables import of external classes. Disabled as default.");
+        Option verbose = new Option("v","verbose", false,"disabled as default");
+        options.addOption(verbose);
+        Option imp = new Option("i","import", false, "disabled as default");
+        options.addOption(imp);
         CommandLineParser parser = new DefaultParser();
         try {
             CommandLine cmd = parser.parse(options, args);
