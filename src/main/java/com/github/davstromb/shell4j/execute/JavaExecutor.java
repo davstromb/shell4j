@@ -20,6 +20,21 @@ public class JavaExecutor implements Executor {
 
     private static final String JAVA_BASE_TXT = "/JavaBase.txt";
     private static final String JAVA_BASE_FILE = "/com/github/dastromb/shell4j/execute/code/Code.java";
+
+    private static final String CODE_PREFIX = "package code;\n" +
+            "\n" +
+            "import java.util.*;\n" +
+            "\n" +
+            "public class Code {\n" +
+            "    \n" +
+            "    static {\n" +
+            "        System.out.println(\"Arne\");\n" +
+            "    }\n" +
+            "\n" +
+            "    public Code() {";
+    private static final String CODE_SUFFIX = "    }" +
+            "}";
+
     private StringBuilder cache;
 
     public JavaExecutor() {
@@ -40,25 +55,14 @@ public class JavaExecutor implements Executor {
     }
 
     public Executor append(JavaCode code) {
-        this.cache.append(code.toString());
+        this.cache.append(code.codeAsString);
         return this;
     }
 
     public String execute() {
         try {
 
-            cache = new StringBuilder("import java.util.*;\n" +
-                    "\n" +
-                    "public class Code {\n" +
-                    "\n" +
-                    "    public static void main(String[] args) {\n" +
-                    "            System.out.println(\"Mega Arne smek\");\n" +
-                    "    }\n" +
-                    "}");
-            DynamicCompiler.create().run(cache.toString());
-
-
-
+            DynamicCompiler.create().run(CODE_PREFIX + cache.toString() + CODE_SUFFIX);
 
         } catch (Exception e) {
             throw new ExecutionException("Could not write code to file lol", e);
@@ -85,7 +89,10 @@ public class JavaExecutor implements Executor {
     }
 
     public static void main(String[] args) {
-        String code = JavaExecutor.create().execute();
+        System.out.println("hej");
+        String code = JavaExecutor.create()
+                .append(JavaCode.create("System.out.println(7);"))
+                .execute();
 
     }
 }

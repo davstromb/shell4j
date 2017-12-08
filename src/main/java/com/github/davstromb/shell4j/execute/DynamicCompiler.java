@@ -163,16 +163,7 @@ public class DynamicCompiler
     }
 
     public static void main(String[] args) throws Exception {
-       DynamicCompiler.create().run(new StringBuilder(
-               "package math;"+
-                       "public class Calculator { "
-                       + "  public void testAdd() { "
-                       + "    System.out.println(200+300); "
-                       + "  } "
-                       + "  public static void main(String[] args) { "
-                       + "    Calculator cal = new Calculator(); "
-                       + "    cal.testAdd(); "
-                       + "  } " + "} ").toString());
+
     }
 
     public static DynamicCompiler create() {
