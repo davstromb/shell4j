@@ -65,6 +65,8 @@ public class Shell {
                     printPrompt();
                 } else if (statement.isVariable()) {
                     executor.append(new JavaVariable(statement.toString()));
+                    System.out.println(executor.execute());
+                    statement = new Statement();
                 } else {
                     statement.add(" ");
                     printContinuationPrompt();
