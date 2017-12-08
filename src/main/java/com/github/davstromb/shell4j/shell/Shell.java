@@ -33,12 +33,16 @@ public class Shell {
 
         printPrompt();
         shell_loop: while (true) {
-            String input = readInput();
+            String input = scanner.nextLine();
             if (isCommand(input)) {
                 switch (input.substring(1)) {
                     case "delete" : executor.clean(); break;
                     case "save": save(); break;
-                    case "exit": save(); break shell_loop;
+                    case "help": printHelp(); break;
+                    case "quit":
+                        save();
+                    case "ragequit":
+                        break shell_loop;
                     default:
                         System.out.println("Command (" + input + ") not recognized");
                 }
@@ -50,9 +54,10 @@ public class Shell {
                     System.out.println(statement);
 
                     executor.append(new JavaCode(statement.toString()));
+                    String res = executor.execute();
+                    System.out.println(res);
 
                     statement = new Statement();
-
                     printPrompt();
                 } else {
                     statement.add(" ");
@@ -64,16 +69,15 @@ public class Shell {
         System.out.println("Goodbye!");
     }
 
+    private void printHelp() {
+        System.out.println("available commands:");
+        System.out.println("/quit");
+        System.out.println("/ragequit");
+        System.out.println("/save");
+    }
+
     private void printContinuationPrompt() {
         System.out.print("    ...> ");
-    }
-
-    private boolean isCompleteStatement(StringBuilder sb) {
-        return sb.toString().endsWith(";");
-    }
-
-    private String readInput() {
-        return scanner.nextLine();
     }
 
     private void printPrompt() {
@@ -81,8 +85,7 @@ public class Shell {
     }
 
     private void save() {
-        // TODO: 2017-12-08
-        System.out.println("Saving session to file...");
+        System.out.println("Not implemented");
     }
 
     private boolean isCommand(String input) {
