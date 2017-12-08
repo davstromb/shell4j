@@ -1,6 +1,7 @@
 package com.github.davstromb.shell4j.execute;
 
 import com.github.davstromb.shell4j.execute.print.Printer;
+import com.github.davstromb.shell4j.model.Code;
 import com.github.davstromb.shell4j.model.JavaCode;
 
 import javax.tools.JavaCompiler;
@@ -42,8 +43,8 @@ public class JavaExecutor implements Executor {
         return this;
     }
 
-    public Executor append(JavaCode code) {
-        this.cache.append(code.codeAsString);
+    public Executor append(Code code) {
+        this.cache.append(code.code());
         return this;
     }
 
@@ -51,16 +52,6 @@ public class JavaExecutor implements Executor {
         try {
             String output = DynamicCompiler.create().run(CODE_PREFIX + cache.toString() + CODE_SUFFIX);
             System.out.println(output);
-        } catch (Exception e) {
-            throw new ExecutionException("Could not write code to file lol", e);
-        }
-        return "";
-    }
-
-    public String execute(String code) {
-        try {
-            DynamicCompiler.create().run(CODE_PREFIX + code + CODE_SUFFIX);
-
         } catch (Exception e) {
             throw new ExecutionException("Could not write code to file lol", e);
         }
