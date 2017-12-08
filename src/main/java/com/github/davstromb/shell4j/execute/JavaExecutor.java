@@ -3,6 +3,7 @@ package com.github.davstromb.shell4j.execute;
 import com.github.davstromb.shell4j.execute.print.Printer;
 import com.github.davstromb.shell4j.model.JavaCode;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -19,7 +20,7 @@ public class JavaExecutor implements Executor {
                             Paths.get(getClass().getResource(JAVA_BASE_TXT).toURI())))
             );
         } catch(Exception e) {
-            throw new ExecutionException("Can not execute", e);
+            throw new ExecutionException("Can not read java base code lol", e);
         }
 
     }
@@ -35,11 +36,25 @@ public class JavaExecutor implements Executor {
     }
 
     public String execute() {
+        try {
+            deleteFile();
+            Files.write(Paths.get("Code.java"), cache.toString().getBytes());
+        } catch (Exception e) {
+            throw new ExecutionException("Could not write code to file lol", e);
+        }
         return "";
+    }
+
+    private void deleteFile() throws IOException {
+        Files.delete(Paths.get("Code.java"));
     }
 
     public Executor print() {
         Printer.create().save(cache);
         return this;
+    }
+
+    public static Executor create() {
+        return new JavaExecutor();
     }
 }
