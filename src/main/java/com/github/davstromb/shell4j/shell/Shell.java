@@ -37,7 +37,7 @@ public class Shell {
         Statement statement = new Statement();
 
         printPrompt();
-        shell_loop: while (true) {
+        shell_loop: while (scanner.hasNext()) {
             String input = scanner.nextLine();
             if (isCommand(input)) {
                 switch (input.substring(1)) {

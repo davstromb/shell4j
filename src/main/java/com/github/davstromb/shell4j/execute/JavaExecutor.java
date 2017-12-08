@@ -15,42 +15,53 @@ import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JavaExecutor implements Executor {
 
     private static final String CODE_PREFIX =
             "import java.util.*;\n" +
-            "\n" +
-            "public class Code {\n" +
-            "    \n" +
-            "    static {";
+                    "\n" +
+                    "public class Code {\n" +
+                    "    \n" +
+                    "    static {";
     private static final String CODE_SUFFIX = "    }" +
             "}";
 
     private StringBuilder cache;
+    private List<Code> codes;
 
     public JavaExecutor() {
-        try {
-            this.cache = new StringBuilder();
-        } catch(Exception e) {
-            throw new ExecutionException("Can not read java base code lol", e);
-        }
-
+        this.codes = new ArrayList<>();
+        this.cache = new StringBuilder();
     }
 
     public Executor clean() {
+        this.codes = new ArrayList<>();
         this.cache = new StringBuilder();
         return this;
     }
 
     public Executor append(Code code) {
-        this.cache.append(code.code());
+        int size = this.codes.size();
+        if (size > 0) {
+            this.cache.append(codes.get(size - 1).code());
+        }
+        codes.add(code);
         return this;
+    }
+
+    private String getExecuteString() {
+        String code = this.codes.get(this.codes.size() - 1).code().trim();
+        String toOutput = code.substring(0, code.length() - 1);
+        String outputString = "System.out.println(" + toOutput + ");";
+        return CODE_PREFIX + cache.toString() + outputString + CODE_SUFFIX;
     }
 
     public String execute() {
         try {
-            String output = DynamicCompiler.create().run(CODE_PREFIX + cache.toString() + CODE_SUFFIX);
+            String output = DynamicCompiler.create().run(getExecuteString());
             System.out.println(output);
         } catch (Exception e) {
             throw new ExecutionException("Could not write code to file lol", e);
