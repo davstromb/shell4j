@@ -1,8 +1,7 @@
 package com.github.davstromb.shell4j.execute;
 
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -23,22 +22,20 @@ import javax.tools.ToolProvider;
  * Dynamic java class compiler and executer  <br>
  * Demonstrate how to compile dynamic java source code, <br>
  * instantiate instance of the class, and finally call method of the class <br>
- *
+ * <p>
  * http://www.beyondlinux.com
  *
  * @author david 2011/07
- *
  */
-public class DynamicCompiler
-{
-    /** where shall the compiled class be saved to (should exist already) */
+public class DynamicCompiler {
+    /**
+     * where shall the compiled class be saved to (should exist already)
+     */
     private static String classOutputFolder = "target/classes/com/github/davstromb/shell4j/execute/code/";
     private String contents;
 
-    public static class MyDiagnosticListener implements DiagnosticListener<JavaFileObject>
-    {
-        public void report(Diagnostic<? extends JavaFileObject> diagnostic)
-        {
+    public static class MyDiagnosticListener implements DiagnosticListener<JavaFileObject> {
+        public void report(Diagnostic<? extends JavaFileObject> diagnostic) {
 
             System.out.println("Line Number->" + diagnostic.getLineNumber());
             System.out.println("code->" + diagnostic.getCode());
@@ -49,46 +46,44 @@ public class DynamicCompiler
         }
     }
 
-    /** java File Object represents an in-memory java source file <br>
-     * so there is no need to put the source file on hard disk  **/
-    public static class InMemoryJavaFileObject extends SimpleJavaFileObject
-    {
+    /**
+     * java File Object represents an in-memory java source file <br>
+     * so there is no need to put the source file on hard disk
+     **/
+    public static class InMemoryJavaFileObject extends SimpleJavaFileObject {
         private String contents = null;
 
-        public InMemoryJavaFileObject(String className, String contents) throws Exception
-        {
+        public InMemoryJavaFileObject(String className, String contents) throws Exception {
             super(URI.create("string:///" + className.replace('.', '/')
                     + Kind.SOURCE.extension), Kind.SOURCE);
             this.contents = contents;
         }
 
         public CharSequence getCharContent(boolean ignoreEncodingErrors)
-                throws IOException
-        {
+                throws IOException {
             return contents;
         }
     }
 
-    /** Get a simple Java File Object ,<br>
-     * It is just for demo, content of the source code is dynamic in real use case */
-    private static JavaFileObject getJavaFileObject(String code)
-    {
+    /**
+     * Get a simple Java File Object ,<br>
+     * It is just for demo, content of the source code is dynamic in real use case
+     */
+    private static JavaFileObject getJavaFileObject(String code) {
 
         JavaFileObject so = null;
-        try
-        {
-            so = new InMemoryJavaFileObject("code.Code", code);
-        }
-        catch (Exception exception)
-        {
+        try {
+            so = new InMemoryJavaFileObject("Code", code);
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
         return so;
     }
 
-    /** compile your files by JavaCompiler */
-    public static void compile(Iterable<? extends JavaFileObject> files)
-    {
+    /**
+     * compile your files by JavaCompiler
+     */
+    public static void compile(Iterable<? extends JavaFileObject> files) {
         //get system compiler:
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 
@@ -103,53 +98,49 @@ public class DynamicCompiler
                 c, options, null,
                 files);
         Boolean result = task.call();
-        if (result == true)
-        {
-            System.out.println("Succeeded");
+        if (result == true) {
+//            System.out.println("Succeeded");
         }
     }
 
-    /** run class from the compiled byte code file by URLClassloader */
-    public static void runIt()
-    {
+    /**
+     * run class from the compiled byte code file by URLClassloader
+     */
+    public static String runIt() {
         // Create a File object on the root of the directory
         // containing the class file
         File file = new File(classOutputFolder);
+        PrintStream stdOut = System.out;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
 
-        try
-        {
+        try {
             // Convert File to a URL
             URL url = file.toURL(); // file:/classes/demo
-            URL[] urls = new URL[] { url };
-
+            URL[] urls = new URL[]{url};
             // Create a new class loader with the directory
             ClassLoader loader = new URLClassLoader(urls);
 
             // Load in the class; Class.childclass should be located in
             // the directory file:/class/demo/
-            Class thisClass = loader.loadClass("math.Calculator");
+            Class thisClass = Class.forName("Code", true, loader);
 
-            Class params[] = {};
-            Object paramsObj[] = {};
-            Object instance = thisClass.newInstance();
-            Method thisMethod = thisClass.getDeclaredMethod("testAdd", params);
+            Object obj = thisClass.newInstance();
 
-            // run the testAdd() method on the instance:
-            thisMethod.invoke(instance, paramsObj);
-        }
-        catch (MalformedURLException e)
-        {
-        }
-        catch (ClassNotFoundException e)
-        {
-        }
-        catch (Exception ex)
-        {
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
+        System.setOut(stdOut);
+        return new String(outputStream.toByteArray());
     }
 
-    public void run(String code) {
+    public String run(String code) {
         this.contents = code;
         //1.Construct an in-memory java source file from your dynamic code
         JavaFileObject file = getJavaFileObject(code);
@@ -159,11 +150,22 @@ public class DynamicCompiler
         compile(files);
 
         //3.Load your class by URLClassLoader, then instantiate the instance, and call method by reflection
-        runIt();
+        return runIt();
     }
 
     public static void main(String[] args) throws Exception {
-
+        String out = DynamicCompiler.create().run(new StringBuilder(
+                "public class Code { "
+                        + "static { System.out.println(\"btest\");}"
+                        + "  public void testAdd() { "
+                        + "    System.out.println(200+300); "
+                        + "  } "
+                        + "  public static void main(String[] args) { "
+                        + "System.out.println(\"atest\");"
+                        + "    Code cal = new Code(); "
+                        + "    cal.testAdd(); "
+                        + "  } " + "} ").toString());
+        System.out.println(out);
     }
 
     public static DynamicCompiler create() {

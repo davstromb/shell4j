@@ -49,9 +49,8 @@ public class JavaExecutor implements Executor {
 
     public String execute() {
         try {
-
-            DynamicCompiler.create().run(CODE_PREFIX + cache.toString() + CODE_SUFFIX);
-
+            String output = DynamicCompiler.create().run(CODE_PREFIX + cache.toString() + CODE_SUFFIX);
+            System.out.println(output);
         } catch (Exception e) {
             throw new ExecutionException("Could not write code to file lol", e);
         }
@@ -87,7 +86,6 @@ public class JavaExecutor implements Executor {
     }
 
     public static void main(String[] args) {
-        System.out.println("hej");
         String code = JavaExecutor.create()
                 .append(JavaCode.create("System.out.println(7);"))
                 .execute();
