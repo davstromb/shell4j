@@ -16,7 +16,7 @@ public class Shell {
     private final Executor executor = new JavaExecutor();
 
     public Shell() {
-        this(false, true);
+        this(false, false);
     }
 
     public Shell(boolean verbose) {
@@ -29,31 +29,33 @@ public class Shell {
     }
 
     public void run() {
-        StringBuilder sb = new StringBuilder();
+        Statement statement = new Statement();
 
         printPrompt();
         shell_loop: while (true) {
             String input = readInput();
             if (isCommand(input)) {
                 switch (input.substring(1)) {
+                    case "delete" : executor.clean(); break;
                     case "save": save(); break;
                     case "exit": save(); break shell_loop;
                     default:
                         System.out.println("Command (" + input + ") not recognized");
                 }
+
                 printPrompt();
             } else {
-                sb.append(input);
-                if (isFinishedStatement(sb)) {
-                    System.out.println(sb);
+                statement.add(input);
+                if (statement.isComplete()) {
+                    System.out.println(statement);
 
-                    JavaCode code = new JavaCode(sb.toString());
-                    executor.append(code);
+                    executor.append(new JavaCode(statement.toString()));
 
-                    sb = new StringBuilder();
+                    statement = new Statement();
+
                     printPrompt();
                 } else {
-                    sb.append(" ");
+                    statement.add(" ");
                     printContinuationPrompt();
                 }
             }
@@ -66,7 +68,7 @@ public class Shell {
         System.out.print("    ...> ");
     }
 
-    private boolean isFinishedStatement(StringBuilder sb) {
+    private boolean isCompleteStatement(StringBuilder sb) {
         return sb.toString().endsWith(";");
     }
 
