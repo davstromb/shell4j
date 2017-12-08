@@ -5,23 +5,12 @@ import java.util.regex.Pattern;
 
 public class JavaCode implements Code {
 
-    private static final String VARIABLE_REGEX = "^[a-zA-Z_$][a-zA-Z_$0-9]*$";
-    public final String codeAsString;
+    private final String codeAsString;
 
     public JavaCode(String codeAsString) {
         if(Objects.isNull(codeAsString)) {
             throw new CodeException("Code can not be null lol");
         }
-
-        Pattern p = Pattern.compile(VARIABLE_REGEX);
-        if (p.matcher(codeAsString).matches()) {
-            System.out.println("Found variable: [" + codeAsString + "]");
-        }
-
-
-
-
-
         this.codeAsString = codeAsString;
     }
 
