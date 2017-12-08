@@ -4,6 +4,11 @@ import com.github.davstromb.shell4j.execute.Executor;
 import com.github.davstromb.shell4j.execute.JavaExecutor;
 import com.github.davstromb.shell4j.model.JavaCode;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.Scanner;
 
 public class Shell {
@@ -39,10 +44,9 @@ public class Shell {
                     case "delete" : executor.clean(); break;
                     case "save": save(); break;
                     case "help": printHelp(); break;
-                    case "quit":
-                        save();
-                    case "ragequit":
-                        break shell_loop;
+                    case "quit": save();
+                    case "ragequit": break shell_loop;
+                    case "lol": lol(); break;
                     default:
                         System.out.println("Command (" + input + ") not recognized");
                 }
@@ -74,6 +78,8 @@ public class Shell {
         System.out.println("/quit");
         System.out.println("/ragequit");
         System.out.println("/save");
+        System.out.println("/help");
+        System.out.println("/delete");
     }
 
     private void printContinuationPrompt() {
@@ -90,6 +96,15 @@ public class Shell {
 
     private boolean isCommand(String input) {
         return input.startsWith(String.valueOf(CMD_CHAR));
+    }
+
+    private void lol() {
+        Path path = Paths.get("src/main/resources(lol.txt");
+        try {
+            Files.readAllLines(path).forEach(l -> System.out.println(l));
+        } catch (IOException e) {
+            System.out.println("Sry, no lol :(");
+        }
     }
 
     public static void main(String[] args) {
