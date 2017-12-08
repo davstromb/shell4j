@@ -41,6 +41,7 @@ public class Shell {
                     default:
                         System.out.println("Command (" + input + ") not recognized");
                 }
+
                 printPrompt();
             } else {
                 sb.append(input);

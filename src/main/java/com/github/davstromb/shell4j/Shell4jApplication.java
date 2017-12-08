@@ -15,11 +15,20 @@ public class Shell4jApplication {
         CommandLineParser parser = new DefaultParser();
         try {
             CommandLine cmd = parser.parse(options, args);
-            Shell shell = new Shell(cmd.hasOption("verbose"), cmd.hasOption("import"));
-
+            if(cmd.hasOption("verbose")) {
+                if(cmd.hasOption("import")) {
+                    Shell shell = new Shell(cmd.hasOption("verbose"), cmd.hasOption("import"));
+                    shell.run();
+                } else {
+                    Shell shell = new Shell(true);
+                    shell.run();
+                }
+            } else {
+                Shell shell = new Shell();
+                shell.run();
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
     }
-
 }
