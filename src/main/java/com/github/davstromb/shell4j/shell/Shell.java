@@ -3,6 +3,7 @@ package com.github.davstromb.shell4j.shell;
 import com.github.davstromb.shell4j.execute.Executor;
 import com.github.davstromb.shell4j.execute.JavaExecutor;
 import com.github.davstromb.shell4j.model.JavaCode;
+import com.github.davstromb.shell4j.model.JavaVariable;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -38,6 +39,7 @@ public class Shell {
 
         printPrompt();
         shell_loop: while (true) {
+
             String input = scanner.nextLine();
             if (isCommand(input)) {
                 switch (input.substring(1)) {
@@ -52,17 +54,17 @@ public class Shell {
                 }
 
                 printPrompt();
+
             } else {
                 statement.add(input);
+
                 if (statement.isComplete()) {
-                    System.out.println(statement);
-
                     executor.append(new JavaCode(statement.toString()));
-                    String res = executor.execute();
-                    System.out.println(res);
-
+                    System.out.println(executor.execute());
                     statement = new Statement();
                     printPrompt();
+                } else if (statement.isVariable()) {
+                    executor.append(new JavaVariable(statement.toString()));
                 } else {
                     statement.add(" ");
                     printContinuationPrompt();
