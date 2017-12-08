@@ -1,4 +1,4 @@
-# shell4j ES Edition
+# shell4j
 
 
 ## Build
