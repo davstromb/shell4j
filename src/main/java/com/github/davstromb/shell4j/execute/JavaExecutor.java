@@ -21,7 +21,7 @@ public class JavaExecutor implements Executor {
     }
 
     public String execute() {
-        return null;
+        return "";
     }
 
     public void print() {
