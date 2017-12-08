@@ -43,7 +43,7 @@ public class JavaExecutor implements Executor {
                     Files.readAllBytes(
                             Paths.get(getClass().getResource(JAVA_BASE_TXT).toURI())))
             );
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new ExecutionException("Can not read java base code lol", e);
         }
 
@@ -61,9 +61,7 @@ public class JavaExecutor implements Executor {
 
     public String execute() {
         try {
-
             DynamicCompiler.create().run(CODE_PREFIX + cache.toString() + CODE_SUFFIX);
-
         } catch (Exception e) {
             throw new ExecutionException("Could not write code to file lol", e);
         }
