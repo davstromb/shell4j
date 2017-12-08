@@ -3,11 +3,6 @@ package com.github.davstromb.shell4j.execute;
 import com.github.davstromb.shell4j.execute.print.Printer;
 import com.github.davstromb.shell4j.model.JavaCode;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -29,19 +24,22 @@ public class JavaExecutor implements Executor {
 
     }
 
-    public void clean() {
+    public Executor clean() {
         this.cache = new StringBuilder();
+        return this;
     }
 
-    public void addCode(JavaCode code) {
+    public Executor append(JavaCode code) {
         this.cache.append(code.toString());
+        return this;
     }
 
     public String execute() {
         return "";
     }
 
-    public void print() {
+    public Executor print() {
         Printer.create().save(cache);
+        return this;
     }
 }
