@@ -4,14 +4,13 @@ import com.github.davstromb.shell4j.execute.Executor;
 import com.github.davstromb.shell4j.execute.JavaExecutor;
 import com.github.davstromb.shell4j.model.JavaCode;
 
-import java.io.Console;
 import java.util.Scanner;
 
 public class Shell {
     private final boolean verbose;
     private final boolean importEverything;
 
-    private final char CMD_CHAR = ':';
+    private final char CMD_CHAR = '/';
 
     private final Scanner  scanner  = new Scanner(System.in);
     private final Executor executor = new JavaExecutor();
@@ -31,17 +30,14 @@ public class Shell {
 
     public void run() {
         StringBuilder sb = new StringBuilder();
+
         printPrompt();
         shell_loop: while (true) {
             String input = readInput();
-
             if (isCommand(input)) {
                 switch (input.substring(1)) {
-                    case "save":
-                        save();
-                        break;
-                    case "quit":
-                        break shell_loop;
+                    case "save": save(); break;
+                    case "exit": save(); break shell_loop;
                     default:
                         System.out.println("Command (" + input + ") not recognized");
                 }
@@ -67,7 +63,7 @@ public class Shell {
     }
 
     private void printContinuationPrompt() {
-        System.out.print("... ");
+        System.out.print("    ...> ");
     }
 
     private boolean isFinishedStatement(StringBuilder sb) {
@@ -79,7 +75,7 @@ public class Shell {
     }
 
     private void printPrompt() {
-        System.out.print("<>> ");
+        System.out.print("shell4j> ");
     }
 
     private void save() {
