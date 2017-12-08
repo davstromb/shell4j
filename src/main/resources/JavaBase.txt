@@ -3,6 +3,6 @@ import java.util.*;
 public class JavaCode {
 
     public static void main(String[] args) {
-            System.out.println("Mega Arne");
+            System.out.println("Mega Arne smek");
     }
 }
