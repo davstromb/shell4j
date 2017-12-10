@@ -54,9 +54,15 @@ public class JavaExecutor implements Executor {
 
     private String getExecuteString() {
         String code = this.codes.get(this.codes.size() - 1).code().trim();
-        String toOutput = code.substring(0, code.length() - 1);
+        String toOutput = stringWash(code.substring(0, code.length() - 1));
         String outputString = "System.out.println(" + toOutput + ");";
         return CODE_PREFIX + cache.toString() + outputString + CODE_SUFFIX;
+    }
+
+    private String stringWash(String snippet) {
+        if(!snippet.contains("=")) return snippet;
+
+        return snippet.split("=")[1].trim();
     }
 
     public String execute() {
@@ -69,9 +75,6 @@ public class JavaExecutor implements Executor {
         return "";
     }
 
-    private void deleteFile() throws IOException {
-//        Files.delete(Paths.get(JAVA_BASE_FILE));
-    }
 
     public Executor print() {
         Printer.create().save(cache);

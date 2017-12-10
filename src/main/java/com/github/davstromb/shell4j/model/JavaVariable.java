@@ -6,6 +6,7 @@ public class JavaVariable implements Code {
 
     public JavaVariable(String variableAsString) {
         this.variableAsString = variableAsString + "=" + variableAsString + ";";
+        int y = 8;
     }
 
     @Override

@@ -5,7 +5,7 @@ import org.apache.commons.cli.*;
 
 public class Shell4jApplication {
 
-    public static void main(String... args) {
+    public static void main(String[] args) {
         Options options = new Options();
         Option verbose = new Option("v","verbose", false,"disabled as default");
         options.addOption(verbose);
