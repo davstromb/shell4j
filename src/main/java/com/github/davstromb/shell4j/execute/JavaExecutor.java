@@ -3,18 +3,6 @@ package com.github.davstromb.shell4j.execute;
 import com.github.davstromb.shell4j.execute.print.Printer;
 import com.github.davstromb.shell4j.model.Code;
 import com.github.davstromb.shell4j.model.JavaCode;
-
-import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +23,7 @@ public class JavaExecutor implements Executor {
     public JavaExecutor() {
         this.codes = new ArrayList<>();
         this.cache = new StringBuilder();
+
     }
 
     public Executor clean() {
