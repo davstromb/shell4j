@@ -17,5 +17,5 @@ shell4j> i + 3;
 shell4j> i
 4
 shell4j> "Lol".substring(1);
-"ol"
+ol
 ```
