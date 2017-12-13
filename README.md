@@ -8,7 +8,7 @@ shell4j requires Maven and Java 8.
 
 ## Usage
 ```java
-$ java -jar shell4j-1.0-SNAPSHOT.jar [OPTION]...
+$ java -jar shell4j-1.0-SNAPSHOT.jar 
 
 shell4j> int i = 4;
 4
