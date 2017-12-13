@@ -4,7 +4,7 @@
 shell4j requires Maven and Java 8.
 
 ## Build
-`mvn clean install`
+`$ mvn clean install`
 
 ## Usage
 ```java
